@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>PROFE AYUDA — Matemáticas & Robótica</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Tipografías divertidas y legibles -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #0be7d9;           /* turquesa vibrante */
+      --bg2:#1de9b6;           /* verde agua */
+      --primary:#ff3d71;       /* rosa intenso */
+      --secondary:#ffd166;     /* amarillo */
+      --ink:#222;
+      --white:#fff;
+      --bubble-student:#ffffff;
+      --bubble-bot:#ffe5ef;
+      --accent:#7c4dff;        /* morado */
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; padding:0; background: linear-gradient(135deg,var(--bg),var(--bg2));
+      font-family: 'Nunito', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--ink);
+    }
+    header{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 18px; background:rgba(255,255,255,.25); backdrop-filter: blur(6px);
+      border-bottom: 3px solid rgba(255,255,255,.45);
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px;
+    }
+    .avatar{
+      width:56px; height:56px; border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, #fff 0 40%, #c5fff5 41% 100%);
+      display:grid; place-items:center; box-shadow: 0 6px 18px rgba(0,0,0,.15);
+      animation: floaty 3s ease-in-out infinite;
+    }
+    @keyframes floaty { 0%,100%{transform: translateY(0)} 50%{transform: translateY(-4px)} }
+    .brand h1{
+      margin:0; font-family:'Fredoka', cursive; font-weight:800; letter-spacing:.4px;
+      color:#111; font-size: clamp(20px, 2.4vw, 28px);
+      text-shadow: 0 2px 0 rgba(255,255,255,.65);
+    }
+    .tagline{
+      font-size:12px; margin-top:2px; color:#222;
+      background:linear-gradient(90deg,var(--secondary),#b5fffc); padding:2px 8px; border-radius:999px;
+      font-weight:700;
+    }
+    .toolbar{
+      display:flex; gap:8px; align-items:center; flex-wrap:wrap;
+    }
+    .btn{
+      appearance:none; border:0; padding:10px 14px; font-weight:800;
+      border-radius:12px; cursor:pointer; transition: transform .08s ease, box-shadow .2s ease;
+      background:var(--primary); color:var(--white); box-shadow:0 6px 0 #d72759, 0 10px 18px rgba(0,0,0,.18);
+    }
+    .btn:hover{ transform: translateY(-2px) }
+    .btn:active{ transform: translateY(1px); box-shadow:0 4px 0 #d72759 }
+    .btn-secondary{
+      background: var(--accent); box-shadow:0 6px 0 #5c35d6, 0 10px 18px rgba(0,0,0,.18);
+    }
+    main{
+      max-width:1100px; margin:16px auto; padding: 0 14px 24px;
+    }
+    .panel{
+      background: rgba(255,255,255,.9); border:3px solid rgba(255,255,255,.8);
+      border-radius:20px; overflow:hidden; box-shadow: 0 12px 22px rgba(0,0,0,.15);
+    }
+    .controls{
+      display:grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap:10px; padding:14px; background:#fff7;
+      border-bottom:3px solid rgba(0,0,0,.06);
+    }
+    .controls .field{
+      background:#fff; padding:10px 12px; border-radius:12px; border:2px solid #eee;
+      display:flex; flex-direction:column; gap:6px;
+    }
+    .label{ font-size:12px; font-weight:800; color:#333; letter-spacing:.2px }
+    select,input[type="text"]{
+      width:100%; border:2px solid #eee; border-radius:10px; padding:8px 10px; font-size:14px;
+      outline:none; background:#fbfbfb;
+    }
+    .chat{
+      height: 60vh; overflow:auto; padding:16px; background:
+      radial-gradient(1200px 60% at 120% -20%, #ffffffaa 0, transparent 60%),
+      radial-gradient(1200px 60% at -20% 120%, #ffffffaa 0, transparent 60%),
+      #fefefe;
+      scroll-behavior:smooth;
+    }
+    .msg{
+      display:flex; gap:10px; margin:12px 0; align-items:flex-end;
+      animation: pop .15s ease-out;
+    }
+    @keyframes pop { from{transform:scale(.98); opacity:.7} to{transform:scale(1); opacity:1} }
+    .msg .bubble{
+      max-width: 76%; padding:12px 14px; border-radius:16px; line-height:1.35;
+      border:2px solid rgba(0,0,0,.06);
+      box-shadow:0 6px 16px rgba(0,0,0,.08);
+      white-space:pre-wrap;
+    }
+    .student{ justify-content:flex-end }
+    .student .bubble{ background: var(--bubble-student) }
+    .bot .bubble{ background: var(--bubble-bot) }
+    .who{
+      font-size:11px; font-weight:800; opacity:.65; margin-bottom:6px;
+      display:inline-block; text-transform: uppercase; letter-spacing:.3px;
+    }
+    .bot .icon, .student .icon{
+      width:42px; height:42px; border-radius:50%; display:grid; place-items:center; flex:0 0 auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,.12);
+    }
+    .bot .icon{ background:#ffe4f0 }
+    .student .icon{ background:#e8ffef }
+    .composer{
+      display:grid; grid-template-columns: 1fr auto; gap:10px; padding:14px; background:#fff7;
+      border-top:3px solid rgba(0,0,0,.06);
+    }
+    textarea{
+      border:2px solid #eee; border-radius:14px; padding:12px; min-height:58px; font-size:15px; resize:vertical;
+      outline:none; background:#fff;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,.04);
+    }
+    .send{
+      display:flex; gap:10px; align-items:center;
+    }
+    .hint{ font-size:12px; opacity:.75; }
+    .pill{
+      padding:6px 10px; border-radius:999px; background:#fff; border:2px dashed #ddd; font-size:12px; font-weight:800;
+    }
+
+    /* Modal Ética IA */
+    .modal{
+      position:fixed; inset:0; display:none; place-items:center; background:rgba(0,0,0,.45); z-index:99;
+    }
+    .modal.open{ display:grid }
+    .modal-card{
+      max-width:800px; width:92%; background:white; border-radius:18px; padding:20px;
+      box-shadow:0 22px 50px rgba(0,0,0,.25); border:3px solid #ffe5ef;
+    }
+    .modal-card h3{
+      margin:0 0 8px 0; font-family:'Fredoka'; font-size:26px; color:#222
+    }
+    .modal-card ul{ margin:10px 0 0 18px }
+    .modal-card li{ margin:6px 0; }
+    .close{
+      float:right; background:#00000010; border:0; padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:800;
+    }
+
+    /* Responsivo */
+    @media (max-width: 880px){
+      .controls{ grid-template-columns:1fr 1fr; }
+      .msg .bubble{ max-width: 86% }
+    }
+    @media (max-width: 520px){
+      .controls{ grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="avatar" title="Vlady">
+        <!-- Avatar SVG robot amigable -->
+        <svg width="34" height="34" viewBox="0 0 64 64" aria-hidden="true">
+          <rect x="10" y="16" width="44" height="30" rx="8" fill="#7c4dff"/>
+          <circle cx="24" cy="30" r="5" fill="#fff"/>
+          <circle cx="40" cy="30" r="5" fill="#fff"/>
+          <rect x="18" y="38" width="28" height="4" rx="2" fill="#ffd166"/>
+          <rect x="30" y="6" width="4" height="10" rx="2" fill="#ff3d71"/>
+          <circle cx="32" cy="4" r="3" fill="#ff3d71"/>
+        </svg>
+      </div>
+      <div>
+        <h1>PROFE AYUDA — Chat de Matemáticas & Robótica</h1>
+        <div class="tagline">Aprende jugando — ¡respuestas claras y ejercicios al instante!</div>
+      </div>
+    </div>
+    <div class="toolbar">
+      <button class="btn btn-secondary" id="btnEthics">Ética IA</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="panel">
+      <div class="controls">
+        <div class="field">
+          <span class="label">Tu ID (se guarda para personalizar)</span>
+          <input type="text" id="studentId" placeholder="ej: alumno_001">
+        </div>
+        <div class="field">
+          <span class="label">Materia</span>
+          <select id="subject">
+            <option value="matematicas">Matemáticas</option>
+            <option value="robotica">Robótica</option>
+            <option value="">Auto (detectado)</option>
+          </select>
+        </div>
+        <div class="field">
+          <span class="label">Explicación</span>
+          <select id="pref">
+            <option value="corta">Corta (rápida)</option>
+            <option value="detallada">Detallada (con tips)</option>
+          </select>
+        </div>
+        <div class="field">
+          <span class="label">Pistas</span>
+          <div class="hint">
+            Usa operaciones: <span class="pill">(12+8)/5</span> o pregunta: <span class="pill">sensor ultrasonico</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="chat" class="chat" aria-live="polite" aria-label="Historial de conversación"></div>
+
+      <div class="composer">
+        <textarea id="message" placeholder="Escribe tu pregunta o ejercicio... Puedes corregir antes de enviar."></textarea>
+        <div class="send">
+          <button class="btn" id="sendBtn">Enviar ▶</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal Ética IA -->
+  <div class="modal" id="ethicsModal" role="dialog" aria-modal="true" aria-labelledby="ethicsTitle">
+    <div class="modal-card">
+      <button class="close" id="closeEthics" aria-label="Cerrar">✕</button>
+      <h3 id="ethicsTitle">Ética IA — Uso Responsable</h3>
+      <p><strong>Transparencia:</strong> La IA puede equivocarse; siempre revisa y pregunta.</p>
+      <ul>
+        <li><strong>Privacidad:</strong> No compartas datos personales. Guardamos solo lo necesario para personalizar tu experiencia.</li>
+        <li><strong>Crítica y verificación:</strong> Contrasta respuestas con tus apuntes o material de clase.</li>
+        <li><strong>Aprendizaje honesto:</strong> Usa la IA para comprender, no para copiar en evaluaciones.</li>
+        <li><strong>Equidad:</strong> Si algo no se entiende, pide otra explicación o ejemplos distintos.</li>
+      </ul>
+      <p>¿Dudas o sugerencias? ¡Cuéntanos para mejorar!</p>
+    </div>
+  </div>
+
+  <script>
+    // ======= Persistencia básica en localStorage (historial e ID) =======
+    const chatEl = document.getElementById('chat');
+    const msgEl = document.getElementById('message');
+    const sendBtn = document.getElementById('sendBtn');
+    const subjectEl = document.getElementById('subject');
+    const prefEl = document.getElementById('pref');
+    const studentIdEl = document.getElementById('studentId');
+
+    const STORAGE_KEY = 'Profe_Ayuda_history';
+    const ID_KEY = 'student_id';
+    const PREF_KEY = 'pref';
+    const SUBJECT_KEY = 'subject';
+
+    function loadState(){
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      const sid = localStorage.getItem(ID_KEY) || `alumno_${Math.floor(Math.random()*10000)}`;
+      const pref = localStorage.getItem(PREF_KEY) || 'corta';
+      const subj = localStorage.getItem(SUBJECT_KEY) || 'matematicas';
+
+      studentIdEl.value = sid;
+      prefEl.value = pref;
+      subjectEl.value = subj;
+
+      saved.forEach(addMessageToUI);
+      setTimeout(()=> chatEl.scrollTop = chatEl.scrollHeight, 50);
+    }
+
+    function saveState(){
+      // No hay opción de borrar historial: se acumula
+      const rows = [...chatEl.querySelectorAll('.msg')].map(node => ({
+        who: node.classList.contains('student') ? 'student' : 'bot',
+        html: node.querySelector('.bubble').innerHTML
+      }));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(rows));
+      localStorage.setItem(ID_KEY, studentIdEl.value.trim() || 'anonimo');
+      localStorage.setItem(PREF_KEY, prefEl.value);
+      localStorage.setItem(SUBJECT_KEY, subjectEl.value);
+    }
+
+    function addMessageToUI(entry){
+      const wrapper = document.createElement('div');
+      wrapper.className = `msg ${entry.who}`;
+      const icon = document.createElement('div');
+      icon.className = 'icon';
+      icon.innerHTML = entry.who === 'bot' ? '🤖' : '🧒';
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      bubble.innerHTML = `<span class="who">${entry.who === 'bot' ? 'PROFE-AYUDA' : 'TÚ'}</span><br>${entry.html}`;
+      if(entry.who === 'student'){
+        wrapper.appendChild(bubble);
+        wrapper.appendChild(icon);
+      } else {
+        wrapper.appendChild(icon);
+        wrapper.appendChild(bubble);
+      }
+      chatEl.appendChild(wrapper);
+    }
+
+    async function sendMessage(){
+      const text = msgEl.value.trim();
+      if(!text) return;
+      const student_id = studentIdEl.value.trim() || 'anonimo';
+      const subject = subjectEl.value;
+      const pref_explicacion = prefEl.value;
+
+      // Añadir mensaje del estudiante a la UI
+      addMessageToUI({who:'student', html: escapeHtml(text)});
+      msgEl.value = '';
+      saveState();
+      chatEl.scrollTop = chatEl.scrollHeight;
+
+      try{
+        const res = await fetch('/api/chat', {
+          method:'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ message:text, student_id, subject, pref_explicacion })
+        });
+        const data = await res.json();
+        if(!data.ok) throw new Error(data.error || 'Error en la respuesta');
+
+        addMessageToUI({who:'bot', html: escapeHtml(data.reply).replace(/\n/g,'<br>')});
+      }catch(err){
+        addMessageToUI({who:'bot', html: 'Ups, no pude responder ahora. Revisa tu conexión o intenta de nuevo.'});
+        console.error(err);
+      }finally{
+        saveState();
+        chatEl.scrollTop = chatEl.scrollHeight;
+      }
+    }
+
+    function escapeHtml(str){
+      return str.replace(/[&<>"']/g, m => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+      }[m]));
+    }
+
+    // Eventos
+    sendBtn.addEventListener('click', sendMessage);
+    msgEl.addEventListener('keydown', e=>{
+      if(e.key === 'Enter' && !e.shiftKey){
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+    studentIdEl.addEventListener('change', saveState);
+    subjectEl.addEventListener('change', saveState);
+    prefEl.addEventListener('change', saveState);
+
+    // Modal Ética IA
+    const ethics = document.getElementById('ethicsModal');
+    document.getElementById('btnEthics').addEventListener('click', ()=> ethics.classList.add('open'));
+    document.getElementById('closeEthics').addEventListener('click', ()=> ethics.classList.remove('open'));
+    ethics.addEventListener('click', (e)=>{ if(e.target === ethics) ethics.classList.remove('open') });
+
+    // Init
+    loadState();
+  </script>
+</body>
+</html>

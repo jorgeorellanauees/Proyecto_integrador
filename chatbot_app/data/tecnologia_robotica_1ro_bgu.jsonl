@@ -1,0 +1,3 @@
+﻿{"instruction":"¿Qué es un sensor ultrasónico?","input":"Explica HC-SR04","output":"El HC-SR04 mide distancia por eco ultrasónico. Distancia ≈ (tiempo_eco * 343 m/s)/2."}
+{"instruction":"Control PWM","input":"¿Cómo usar PWM en Arduino?","output":"Usa analogWrite(pin, valor). Rango 0–255; simula voltaje promedio para controlar brillo o velocidad."}
+{"instruction":"Puente H","input":"¿Para qué sirve?","output":"Permite invertir el giro de un motor DC usando dos entradas lógicas y la alimentación."}

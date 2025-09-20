@@ -1,0 +1,15 @@
+# --- Core ML / NLP ---
+torch==2.2.2
+transformers==4.45.2
+datasets==3.1.0
+tokenizers==0.20.3
+accelerate==1.1.1
+peft==0.13.2
+
+# --- Web / API ---
+flask==3.0.3
+
+# --- Utilidades ---
+tqdm==4.66.5
+numpy<2.0.0
+pandas==2.2.3
